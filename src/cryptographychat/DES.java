@@ -135,7 +135,7 @@ public class DES { // Data Encryption Standard
             output += wordReverseCipher(aux, key);
         }
 
-        return output;
+        return Binary.getValue(output);
     }
 
     public static String wordCipher(String input, String mykey) { // input 64 bits, mykey 64 bits

@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.ListSelectionEvent;
 
 public class HomeWindow extends JFrame implements Runnable {
     private User user = null;
@@ -31,14 +32,14 @@ public class HomeWindow extends JFrame implements Runnable {
     public void run() {
         try {
             
-            ServerSocket server = new ServerSocket(3080);
+            ServerSocket server = new ServerSocket(8080);
             while(true) {
                 try {
                     Socket socket = server.accept();
                     ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                     Message mensaje_recibido = (Message)ois.readObject();
                     System.out.println(mensaje_recibido);
-                    modelo.addElement(mensaje_recibido.toString());
+                    modelo.addElement(mensaje_recibido);
                     mensajes.setModel(modelo);
                     socket.close();
                 } catch (IOException ex) {
@@ -51,7 +52,7 @@ public class HomeWindow extends JFrame implements Runnable {
                 
             }
         } catch (IOException ex) {            
-            Logger.getLogger(HomeWindow.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(HomeWindow.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error en levantar el servidor", "Algo salió mal :(", JOptionPane.ERROR_MESSAGE);
         }
         
@@ -103,6 +104,11 @@ public class HomeWindow extends JFrame implements Runnable {
             SendMessageWindow smw = new SendMessageWindow(this, user);
             this.dispose();
             smw.setVisible(true);
+        });
+        mensajes.addListSelectionListener((ListSelectionEvent a) -> {
+            MessageWindow mw = new MessageWindow(this, user, (Message)mensajes.getSelectedValue());
+            this.dispose();
+            mw.setVisible(true);
         });
     }
 }

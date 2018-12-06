@@ -2,13 +2,10 @@ package cryptographychat;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SendMessageWindow extends JFrame {
     private User user;
