@@ -89,7 +89,7 @@ public class SendMessageWindow extends JFrame {
         enviar.addActionListener((ActionEvent a) -> {
             if(verifyFields(ip, publica, des, simetrica)) {
                 try {
-                    Socket socket = new Socket(ip.getText(), 8080);
+                    Socket socket = new Socket(ip.getText(), 9090);
                     ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     Message mensaje_enviar;
                     int firma_digital;
@@ -106,7 +106,7 @@ public class SendMessageWindow extends JFrame {
                     socket.close();
                     
                 } catch (IOException ex) {
-                    //ex.printStackTrace();
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Error en la conexión", "Algo salió mal :(", JOptionPane.ERROR_MESSAGE);
                 }
                 

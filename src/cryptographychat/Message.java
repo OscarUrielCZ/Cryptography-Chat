@@ -3,7 +3,7 @@ package cryptographychat;
 import java.io.Serializable;
 import java.math.BigInteger;
 
-public class Message implements Serializable {
+public class Message {
     private User remitente;
     private String ip_dest;
     private BigInteger publica_dest;
@@ -22,8 +22,16 @@ public class Message implements Serializable {
         this.hash = hash;
     }
     
+    public User obtenerRemitente() {
+        return remitente;
+    }
+    
+    public String obtenerAlgoritmo() {
+        return algoritmo;
+    }
+    
     public String toString() {
-        String cadena = remitente.obtenerNombre();
+        String cadena = remitente.obtenerNombre() + ": ";
         if(algoritmo.equals("DES"))
             for(Integer i: mensaje_des)
                 cadena += Integer.toString(i);
@@ -31,8 +39,8 @@ public class Message implements Serializable {
             for(BigInteger b: mensaje_rsa)
                 cadena += b.toString();
         
-        if(cadena.length() > 40)
-            cadena = cadena.substring(0, 37) + "...";
+        if(cadena.length() > 50)
+            cadena = cadena.substring(0, 47) + "...";
         
         return cadena;
     }

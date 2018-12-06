@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.ListSelectionEvent;
 
 public class HomeWindow extends JFrame implements Runnable {
     private User user = null;
@@ -31,7 +32,8 @@ public class HomeWindow extends JFrame implements Runnable {
     public void run() {
         try {
             
-            ServerSocket server = new ServerSocket(3080);
+            ServerSocket server = new ServerSocket(8080);
+            System.out.println("Servidor en puerto 8080");
             while(true) {
                 try {
                     Socket socket = server.accept();
@@ -42,7 +44,7 @@ public class HomeWindow extends JFrame implements Runnable {
                     mensajes.setModel(modelo);
                     socket.close();
                 } catch (IOException ex) {
-                    //Logger.getLogger(HomeWindow.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Error en la conexión", "Algo salió mal :(", JOptionPane.ERROR_MESSAGE);
                 } catch (ClassNotFoundException ex) {
                     //Logger.getLogger(HomeWindow.class.getName()).log(Level.SEVERE, null, ex);
@@ -103,6 +105,9 @@ public class HomeWindow extends JFrame implements Runnable {
             SendMessageWindow smw = new SendMessageWindow(this, user);
             this.dispose();
             smw.setVisible(true);
+        });
+        mensajes.addListSelectionListener((ListSelectionEvent evt) -> {
+            System.out.println(mensajes.getSelectedValue());
         });
     }
 }
