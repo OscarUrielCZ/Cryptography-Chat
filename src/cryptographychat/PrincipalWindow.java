@@ -2,10 +2,6 @@ package cryptographychat;
 
 import javax.swing.*;
 import java.awt.event.*;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.math.BigInteger;
-import java.util.ArrayList;
 
 public class PrincipalWindow extends JFrame {   
     public PrincipalWindow() {

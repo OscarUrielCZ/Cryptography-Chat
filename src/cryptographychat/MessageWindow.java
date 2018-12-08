@@ -1,10 +1,6 @@
 package cryptographychat;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.math.BigInteger;
-import java.net.Socket;
 import javax.swing.*;
 
 public class MessageWindow extends JFrame {

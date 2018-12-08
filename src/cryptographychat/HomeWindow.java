@@ -8,8 +8,6 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import javax.swing.*;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 
 public class HomeWindow extends JFrame implements Runnable {
