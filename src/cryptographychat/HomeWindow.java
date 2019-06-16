@@ -11,12 +11,14 @@ import java.net.Socket;
 import javax.swing.event.ListSelectionEvent;
 
 public class HomeWindow extends JFrame implements Runnable {
-    private User user = null;
+    private RSA rsa = null;
+    private String info;
+    private final int LONGBITS = 10;
     private JList mensajes;
     private DefaultListModel modelo;
     
-    public HomeWindow(User user) {
-        this.user = user;
+    public HomeWindow() {
+        rsa = new RSA(LONGBITS);
         setSize(500, 600);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -57,12 +59,13 @@ public class HomeWindow extends JFrame implements Runnable {
     }
     
     private void loadComponents() {
+        info = getInfoString();     
         JPanel jp = new JPanel();
         ImageIcon mas = new ImageIcon("nuevo_mensaje.png");
-        JButton info = new JButton("Mi información");
+        JButton llaves = new JButton("Generar llaves");
         JButton nuevo = new JButton();
-        JButton salir = new JButton("Cerrar sesión");
-        JLabel autor = new JLabel("Creado por Oscar Uriel Cortés Zanabria - 2CM3");
+        JLabel mismensajes = new JLabel("Mis mensajes");
+        JLabel infolabel = new JLabel(info);
         mensajes = new JList();
         modelo = new DefaultListModel();
         
@@ -73,40 +76,39 @@ public class HomeWindow extends JFrame implements Runnable {
         mensajes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // solo se puede seleccionar un elemento
         
         jp.setLayout(null);
-        salir.setBounds(50, 30, 130, 25);
-        info.setBounds(220, 30, 135, 25);
+      
+        mismensajes.setBounds(40, 40, 135, 25);
+        llaves.setBounds(200, 30, 135, 25);
         nuevo.setBounds(415, 25, 35, 35);
-        autor.setBounds(160, 525, 320, 20);
+        infolabel.setBounds(90, 525, 370, 20);
         mensajes.setBounds(50, 70, 400, 440);
         
-        jp.add(salir);
-        jp.add(info);
+        jp.add(mismensajes);
+        jp.add(llaves);
         jp.add(nuevo);
-        jp.add(autor);
+        jp.add(infolabel);
         jp.add(mensajes);
 
         this.add(jp);
         
-        salir.addActionListener((ActionEvent a) -> {
-            PrincipalWindow pw = new PrincipalWindow();
-            user = null;
-            this.dispose();
-            pw.setVisible(true);
-        });
-        info.addActionListener((ActionEvent a) -> {
-            InfoWindow iw = new InfoWindow(this, user);
-            this.dispose();
-            iw.setVisible(true);
+        llaves.addActionListener((ActionEvent a) -> {
+            rsa.setValues(LONGBITS);
+            info = getInfoString();
+            infolabel.setText(info);
         });
         nuevo.addActionListener((ActionEvent a) -> {
-            SendMessageWindow smw = new SendMessageWindow(this, user);
+            SendMessageWindow smw = new SendMessageWindow(this, rsa);
             this.dispose();
             smw.setVisible(true);
         });
         mensajes.addListSelectionListener((ListSelectionEvent a) -> {
-            MessageWindow mw = new MessageWindow(this, user, (Message)mensajes.getSelectedValue());
+            MessageWindow mw = new MessageWindow(this, this.rsa, (Message)mensajes.getSelectedValue());
             this.dispose();
             mw.setVisible(true);
         });
+    }
+    
+    private String getInfoString() {
+        return "Llave pública: " + rsa.getPublicKey() + "                 Llave privada: " + rsa.getPrivateKey();
     }
 }

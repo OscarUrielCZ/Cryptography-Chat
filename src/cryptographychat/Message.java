@@ -5,68 +5,68 @@ import java.math.BigInteger;
 
 public class Message implements Serializable {
     private static final long serialVersionUID = 6529685098267757690L;
-    private User remitente;
-    private String ip_dest;
-    private BigInteger publica_dest;
-    private BigInteger[] mensaje_rsa;
-    private int[] mensaje_des;
-    private String algoritmo;
+    private RSA rsa;
+    private String destIP;
+    private BigInteger publicDest;
+    private BigInteger[] messageRSA;
+    private int[] messageDES;
+    private String algorithm;
     private int hash;
     
-    public Message(User remitente, String ip_dest, BigInteger publica_dest, String algoritmo, BigInteger[] mensaje_rsa, int[] mensaje_des, int hash) {
-        this.remitente = remitente;
-        this.ip_dest = ip_dest;
-        this.publica_dest = publica_dest;
-        this.mensaje_rsa = mensaje_rsa;
-        this.mensaje_des = mensaje_des;
-        this.algoritmo = algoritmo;
+    public Message(RSA rsa, String destIP, BigInteger publicDest, String algorithm, BigInteger[] messageRSA, int[] messageDES, int hash) {
+        this.rsa = rsa;
+        this.destIP = destIP;
+        this.publicDest = publicDest;
+        this.messageRSA = messageRSA;
+        this.messageDES = messageDES;
+        this.algorithm = algorithm;
         this.hash = hash;
     }
     
-    public User obtenerRemitente() {
-        return remitente;
+    public RSA getRSA() {
+        return rsa;
     }
     
-    public String obtenerAlgoritmo() {
-        return algoritmo;
+    public String getAlgorithm() {
+        return algorithm;
     }
     
-    public String obtenerMensaje() {
-        String cadena = "";
-        if(algoritmo.equals("DES"))
-            for(Integer i: mensaje_des)
-                cadena += Integer.toString(i);
+    public String getMessage() {
+        String string = "";
+        if(algorithm.equals("DES"))
+            for(Integer i: messageDES)
+                string += Integer.toString(i);
         else
-            for(BigInteger b: mensaje_rsa)
-                cadena += b.toString();
+            for(BigInteger b: messageRSA)
+                string += b.toString();
         
-        return cadena;
+        return string;
     }
     
-    public int[] obtenerMensajeDES() {
-        return mensaje_des;
+    public int[] getDESMessage() {
+        return messageDES;
     }
     
-    public BigInteger[] obtenerMensajeRSA() {
-        return mensaje_rsa;
+    public BigInteger[] getRSAMessage() {
+        return messageRSA;
     }
     
-    public int obtenerHash() {
+    public int getHash() {
         return hash;
     }
     
     public String toString() {
-        String cadena = remitente.obtenerNombre() + ": ";
-        if(algoritmo.equals("DES"))
-            for(Integer i: mensaje_des)
-                cadena += Integer.toString(i);
+        String string = rsa.getPublicKey() + ": ";
+        if(algorithm.equals("DES"))
+            for(Integer i: messageDES)
+                string += Integer.toString(i);
         else
-            for(BigInteger b: mensaje_rsa)
-                cadena += b.toString();
+            for(BigInteger b: messageRSA)
+                string += b.toString();
         
-        if(cadena.length() > 50)
-            cadena = cadena.substring(0, 47) + "...";
+        if(string.length() > 50)
+            string = string.substring(0, 47) + "...";
         
-        return cadena;
+        return string;
     }
 }

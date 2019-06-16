@@ -11,6 +11,17 @@ public class RSA implements Serializable { // Rivest, Shamir y Adleman
 
     // constructores
     public RSA(int longBitsPrimos) {
+        setValues(longBitsPrimos);
+    }
+
+    public RSA(BigInteger e, BigInteger d, BigInteger n) {
+        this.e = e;
+        this.d = d;
+        this.n = n;
+    }
+
+    // setters y getters
+    public void setValues(int longBitsPrimos) {
         BigInteger p, q, phi;
 
         p = new BigInteger(longBitsPrimos, 100, new Random());
@@ -27,19 +38,12 @@ public class RSA implements Serializable { // Rivest, Shamir y Adleman
 
         d = e.modInverse(phi);
     }
-
-    public RSA(BigInteger e, BigInteger d, BigInteger n) {
-        this.e = e;
-        this.d = d;
-        this.n = n;
-    }
-
-    // setters y getters
-    public BigInteger obtenerLlavePublica() {
+    
+    public BigInteger getPublicKey() {
         return e;
     }
 
-    public BigInteger obtenerLlavePrivada() {
+    public BigInteger getPrivateKey() {
         return d;
     }
     

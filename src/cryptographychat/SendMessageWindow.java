@@ -8,11 +8,11 @@ import java.math.BigInteger;
 import java.net.Socket;
 
 public class SendMessageWindow extends JFrame {
-    private User user;
+    private RSA rsa;
     private HomeWindow padre;
     
-    public SendMessageWindow(HomeWindow padre, User user) {
-        this.user = user;
+    public SendMessageWindow(HomeWindow padre, RSA rsa) {
+        this.rsa = rsa;
         setSize(400, 480);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -95,9 +95,9 @@ public class SendMessageWindow extends JFrame {
                     else
                         firma_digital = -1;
                     if(des.isSelected())
-                        mensaje_enviar = new Message(user, ip.getText(), new BigInteger(publica.getText()), "DES", null,  DES.cipher(mensaje.getText(), simetrica.getText()), firma_digital);
+                        mensaje_enviar = new Message(this.rsa, ip.getText(), new BigInteger(publica.getText()), "DES", null,  DES.cipher(mensaje.getText(), simetrica.getText()), firma_digital);
                     else
-                        mensaje_enviar = new Message(user, ip.getText(), new BigInteger(publica.getText()), "RSA", user.obtenerRSA().cifrar(mensaje.getText(), new BigInteger(publica.getText())), null, firma_digital);
+                        mensaje_enviar = new Message(this.rsa, ip.getText(), new BigInteger(publica.getText()), "RSA", this.rsa.cifrar(mensaje.getText(), new BigInteger(publica.getText())), null, firma_digital);
                     
                     oos.writeObject(mensaje_enviar);
                     socket.close();
